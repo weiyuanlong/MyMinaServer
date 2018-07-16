@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aisafer.minasocket.mapper.UserMapper">
+
+    <select id="findUserByUserName" parameterType="String" resultType="map">
+        SELECT
+            u.password,
+            i.time_interval
+        FROM
+            gpsdb2015.userinfo u
+        LEFT JOIN gpsdb2015.userdata_interval i ON u.userId = i.userId
+        WHERE
+            u.loginName = #{username}
+        AND
+            u.deleted = 0
+    </select>
+
+</mapper>

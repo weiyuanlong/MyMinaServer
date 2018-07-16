@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aisafer.minasocket.mapper.DriverMapper">
+
+    <select id="findDriverByMap" parameterType="map" resultType="map">
+        SELECT
+            d.driverName,
+            d.telephone,
+            d.identityCard AS idCard,
+            d.faceModel,
+            d.updateTime AS 'timeStamp',
+            v.simNo,
+            v.plateNo
+        FROM gpsdb2015.driverinfo d
+        LEFT JOIN gpsdb2015.vehicle v ON d.vehicleId = v.vehicleId
+        LEFT JOIN gpsdb2015.userinfo u ON d.tenantId = u.tenantId
+        WHERE
+            d.deleted = 0
+        AND
+	        d.mainDriver = 1
+        AND
+            d.updateTime > #{updateTime}
+        AND
+            u.userId = #{userId}
+        AND
+            v.deleted = 0
+        AND
+            u.deleted = 0
+    </select>
+
+</mapper>

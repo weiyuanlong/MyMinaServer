@@ -1,0 +1,74 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aisafer.minasocket.mapper.DepartmentMapper">
+
+    <!-- 查询报警事件 -->
+    <select id="findDepartmentAll" resultType="java.util.HashMap">
+        SELECT
+            depId,
+	        `name`
+       FROM
+	        gpsdb2015.department
+    </select>
+
+    <!-- 查询所有车辆 -->
+    <select id="findVehicleAll" resultType="java.util.HashMap">
+        SELECT
+            v.vehicleId AS id,
+            v.depId,
+            v.plateNo,
+            v.plateColor,
+            v.vehicleType,
+            v.simNo
+        FROM
+            gpsdb2015.vehicle v
+    </select>
+
+    <!-- 查询所有车辆类型 -->
+    <select id="findVehicleTypeAll" resultType="java.util.HashMap">
+        SELECT
+            id,
+            `name`
+        FROM
+            gpsdb2015.vehicletype
+    </select>
+
+    <!-- 查询所有司机 -->
+    <select id="findDriverAll" resultType="java.util.HashMap">
+        SELECT
+            driverId AS id,
+            driverName,
+            identityCard,
+            telephone,
+            vehicleId,
+            tenantId
+        FROM
+            gpsdb2015.driverinfo
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="findUserAll" resultType="java.util.HashMap">
+        SELECT
+            u.userId,
+            u.`name`,
+            u.loginName,
+            u.password
+        FROM
+            gpsdb2015.userinfo u
+        where
+            u.deleted = 0
+    </select>
+
+    <!-- 根据sim卡号查询iccid -->
+    <select id="findIccidBySimNo" parameterType="java.lang.Long" resultType="String">
+        SELECT
+            iccid
+        FROM
+            gpsdb2015.iccidsimno
+        WHERE
+            simNo = #{simNo}
+    </select>
+
+</mapper>

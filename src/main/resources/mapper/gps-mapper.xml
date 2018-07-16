@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aisafer.minasocket.mapper.GPSInfoMapper">
+
+    <!-- 地理位置信息 -->
+    <select id="findGPSInfoParamMap" resultType="java.util.HashMap">
+        SELECT
+        DISTINCT
+            g.gpsId,
+            g.plateNo,
+            g.sendTime,
+            g.longitude,
+            g.latitude,
+            g.velocity,
+            g.direction,
+            g.altitude,
+            g.createDate,
+            v.vehicleType,
+            u.`name` AS tenantName
+        FROM
+            ${tableName} g
+        LEFT JOIN gpsdb2015.vehicle v ON v.simNo = g.simNo
+        LEFT JOIN gpsdb2015.userinfo u ON u.tenantId = v.depId
+        <where>
+            <choose>
+                <when test="id != null">
+                    g.gpsId > #{id}
+                </when>
+                <otherwise>
+                    g.createDate > #{createTime}
+                </otherwise>
+            </choose>
+            AND
+              u.userId = #{userId}
+            AND
+              v.deleted = 0
+        </where>
+    </select>
+
+</mapper>

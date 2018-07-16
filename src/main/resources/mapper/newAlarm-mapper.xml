@@ -1,0 +1,94 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aisafer.minasocket.mapper.NewAlarmMapper">
+
+    <!-- 查询报警事件 -->
+    <select id="findAlarmByIdOrTime" resultType="java.util.HashMap">
+        SELECT
+        DISTINCT
+            a.id,
+            a.createDate,
+            a.remark,
+            a.ackSn,
+            a.alarmSource,
+            a.alarmTime,
+            a.alarmType,
+            a.descr,
+            a.location,
+            a.latitude,
+            a.longitude,
+            a.plateNo,
+            a.speed,
+            a.driverId,
+            a.createDate,
+            a.vehicleId,
+            u.`name` AS tenantName
+        FROM
+            ${tableName} a USE INDEX(INDEX_createDate)
+        LEFT JOIN gpsdb2015.vehicle v ON a.vehicleId = v.vehicleId
+        LEFT JOIN gpsdb2015.userinfo u ON u.tenantId = v.depId
+        <where>
+            <choose>
+                <when test="id != null">
+                    a.id > #{id}
+                </when>
+                <otherwise>
+                    a.createDate > #{createTime}
+                </otherwise>
+            </choose>
+            AND v.deleted = 0
+            AND u.deleted = 0
+            AND u.userId = #{userId}
+        </where>
+    </select>
+
+    <!-- 查询报警处理事件 -->
+    <select id="findAlarmRecords" resultType="java.util.HashMap">
+        SELECT
+        DISTINCT
+            a.id,
+            a.plateNo,
+            a.vehicleId,
+            a.driverId,
+            a.alarmType AS alarmtype,
+            a.alarmTime as alarmtime,
+            a.processedUserId as userId,
+            a.processedUserName as username,
+            a.processedTime as actiontime,
+            u.`name` AS depName,
+            u.loginName AS loginname
+        FROM
+            ${tableName} a
+        LEFT JOIN gpsdb2015.vehicle v ON a.vehicleId = v.vehicleId
+        LEFT JOIN gpsdb2015.userinfo u ON u.tenantId = v.depId
+        WHERE
+            a.processedTime IS NOT NULL
+        AND
+            a.processedUserId IS NOT NULL
+        AND
+            a.processedTime > #{alarmRecordTime}
+        AND
+            v.deleted = 0
+        AND
+            u.deleted = 0
+        AND
+            u.userId = #{userId}
+    </select>
+
+    <!-- 根据车牌号 sim卡号  创建时间 查询上传文件名称 -->
+    <select id="findFileByPlateNoAndSimNo" resultType="String" parameterType="map">
+        SELECT
+            m.fileName
+        FROM
+            gpsdb2015.mediaitem m
+        WHERE
+            m.simNo = #{simNo}
+        AND
+            m.plateNo = #{plateNo}
+        AND
+            m.createDate > #{newAlarmCreateTime}
+    </select>
+
+</mapper>

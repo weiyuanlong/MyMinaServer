@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 操作公司组织的service层bean -->
+    <bean id="departmentService" class="com.aisafer.minasocket.service.impl.DepartmentServiceImpl" />
+
+    <!-- 操作报警事件的service层bean -->
+    <bean id="newAlarmService" class="com.aisafer.minasocket.service.impl.NewAlarmServiceImpl" />
+
+    <!-- 操作gps的service层bean -->
+    <bean id="gpsInfoService" class="com.aisafer.minasocket.service.impl.GPSInfoServiceImpl" />
+
+    <!-- 操作用户的service层bean -->
+    <bean id="userService" class="com.aisafer.minasocket.service.impl.UserServiceImpl" />
+
+    <!-- 操作直播service层bean -->
+    <bean id="seedingService" class="com.aisafer.minasocket.service.impl.SeedingServiceImpl" />
+
+    <!-- 操作sim卡信息service层bean -->
+    <bean id="simService" class="com.aisafer.minasocket.service.impl.SimServiceImpl" />
+
+    <!-- 操作sim卡信息service层bean -->
+    <bean id="driverService" class="com.aisafer.minasocket.service.impl.DriverServiceImpl" />
+
+</beans>

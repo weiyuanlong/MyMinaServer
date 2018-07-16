@@ -1,0 +1,9 @@
+spring:
+    profiles:
+        active: test
+server:
+    port: 9080
+    tomcat:
+      uri-encoding: UTF-8
+    servlet:
+      context-path: /mina
